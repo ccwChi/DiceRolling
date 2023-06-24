@@ -1,42 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <title>Rolling dice</title>
-  </head>
-  <body>
-		<main>
-			<div class="frame">
-				<div class="frame__title"> 
-					<h1 class="frame__title-main">Three.js Dice Roller</h1> 
-					<div class="ui-controls">
-						<div class="score">Score: <span id="score-result"></span></div>
-						<button class="add-dice-btn" data-color="orange">橘++</button>
-						<button class="subtraction-dice-btn" data-color="orange">橘--</button>
-						<button class="add-dice-btn" data-color="yellow">黃++</button>
-						<button class="subtraction-dice-btn" data-color="yellow">黃--</button>
-						<button class="add-dice-btn" data-color="green">綠++</button>
-						<button class="subtraction-dice-btn" data-color="green">綠--</button>
-						<button class="add-dice-btn" data-color="enemy">敵++</button>
-						<button class="subtraction-dice-btn" data-color="enemy">敵--</button>
-						<button class="add-dice-btn" data-color="red">紅++</button>
-						<button class="subtraction-dice-btn" data-color="red">紅--</button>
-						<button class="add-dice-btn" data-color="blue">藍++</button>
-						<button class="subtraction-dice-btn" data-color="blue">藍--</button>
-                        <button class="add-dice-btn" data-color="dark">暗影</button>
-						<button class="subtraction-dice-btn" data-color="dark">暗影-</button>
-						<button id="roll-btn">重丟</button>
-					</div>
-				</div>
-			</div>
-			<div class="content">
-				<canvas id="canvas"></canvas>
-				
-			</div>
-		</main>
-    <script type="module" src="bundle.js"></script>
-	<!-- <script type="module" src="/src/three.js"></script> -->
-  </body>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <title>Rolling Dice</title>
+</head>
+<body>
+    
+    <nav class="sidebar">
+        <div class="sidebar-inner">
+            <header class="sidebar-header">
+                <button type="button" class="sidebar-burger" onclick="toggleSidebar()">
+                    <i class='bx bx-menu'></i>
+                </button>
+                <button id="roll-btn">重丟</button>
+            </header>
+
+            <nav class="sidebar-menu">
+                <div class="dicediv">
+                    <button type="button " class="yellow subtraction-dice-btn" data-color="orange"> 
+                        <i class='bx bx-minus '></i>
+                    </button>
+                    <button type="button"  class="yellow add-dice-btn" data-color="yellow">
+                        <i class='bx bx-plus'></i>
+                    </button>
+                </div>
+                <div class="dicediv">
+                    <button type="button " class="orange">
+                        <i class='bx bx-minus '></i>
+                    </button>
+                    <button type="button"  class="orange">
+                        <i class='bx bx-plus'></i>
+                    </button>
+                </div>                <div class="dicediv">
+                    <button type="button " class="red">
+                        <i class='bx bx-minus '></i>
+                    </button>
+                    <button type="button"  class="red">
+                        <i class='bx bx-plus'></i>
+                    </button>
+                </div>                <div class="dicediv">
+                    <button type="button " class="green">
+                        <i class='bx bx-minus '></i>
+                    </button>
+                    <button type="button"  class="green">
+                        <i class='bx bx-plus'></i>
+                    </button>
+                </div>                <div class="dicediv">
+                    <button type="button " class="blue">
+                        <i class='bx bx-minus '></i>
+                    </button>
+                    <button type="button"  class="blue">
+                        <i class='bx bx-plus'></i>
+                    </button>
+                </div>                <div class="dicediv">
+                    <button type="button " class="dark">
+                        <i class='bx bx-minus '></i>
+                    </button>
+                    <button type="button"  class="dark">
+                        <i class='bx bx-plus'></i>
+                    </button>
+                </div>                <div class="dicediv">
+                    <button type="button " class="enemy">
+                        <i class='bx bx-minus '></i>
+                    </button>
+                    <button type="button"  class="enemy">
+                        <i class='bx bx-plus'></i>
+                    </button>
+                </div>
+            </nav>
+        
+
+        </div>
+    </nav>
+	<div class="score">Score: <span id="score-result"></span></div>
+    <div class="content">
+        <canvas id="canvas"></canvas>
+        
+    </div>
+</main>
+<script type="module" src="bundle.js"></script>
+
+    <script type="text/javascript">
+        const toggleSidebar = () => document.body.classList.toggle("open");
+    </script>
+
+</body>
 </html>
+<!-- <i class='bx bx-plus' ></i> -->
+<!-- <i class='bx bx-dice-6' ></i> -->
