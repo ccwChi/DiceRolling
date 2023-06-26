@@ -20,11 +20,12 @@ import "./style.css"
 import * as CANNON from 'cannon-es';
 
 import * as THREE from 'three';
-import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+// import * as BufferGeometryUtils from 'three/addons/utils/BufferGeometryUtils.js';
+import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 
 const canvasEl = document.querySelector('#canvas');
 const scoreResult = document.querySelector('#score-result');
-const rollBtn = document.querySelector('#roll-btn');
+// const rollBtn = document.querySelector('#roll-btn');
 const addDiceBtn = document.querySelectorAll('.add-dice-btn');
 const subtractionDiceBtn = document.querySelectorAll('.subtraction-dice-btn');
 
@@ -53,7 +54,7 @@ initScene();
 
 window.addEventListener('resize', updateSceneSize);
 window.addEventListener('dblclick', throwDice);
-rollBtn.addEventListener('click', throwDice);
+// rollBtn.addEventListener('click', throwDice);
 addDiceBtn.forEach(function(btn){
     btn.addEventListener('click', function(){
         let color = this.dataset.color;
@@ -70,7 +71,6 @@ subtractionDiceBtn.forEach(function(btn){
 });
 
 function initScene() {
-
     renderer = new THREE.WebGLRenderer({
         alpha: true,
         antialias: true,
@@ -81,9 +81,9 @@ function initScene() {
 
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, .1, 300)
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, .1, 300);
     camera.position.set(0, 2, 4).multiplyScalar(3); //攝影機拉遠拉近
-    camera.lookAt(0, -4, 1); //觀看角度
+    camera.lookAt(0, -4, -2); //觀看角度
 
     updateSceneSize();
     THREE.ColorManagement.legacyMode = false;
@@ -98,9 +98,11 @@ function initScene() {
     topLight.shadow.camera.far = 400;
     scene.add(topLight);
 
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.target.set(5, -2, -4); // 设置控制器的焦点
+    controls.update();
 
     createFloor();
-
     throwDice();
 
     render();
@@ -164,28 +166,7 @@ function resetTotalAttributes() {
     totalAttributes.dark_skill = 0;
 }
 
-function createYellowDiceMesh() {
-  const diceMesh = new THREE.Group();
-
-  const textureLoader = new THREE.TextureLoader();
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-  const textureCube3 = []
-
-  for (let i=0; i<6; i++){
-      const texturePath = `/image/yellow${i}.png`;
-      const material = new THREE.MeshStandardMaterial({
-          map: textureLoader.load(texturePath),
-      });
-      textureCube3.push(material);
-  }
-  const plane = new THREE.Mesh(geometry, textureCube3);
-  diceMesh.add(plane);
-
-  return diceMesh;
-}
-
-function createGreenDiceMesh(){
+function createDiceMesh(color){
     const diceMesh = new THREE.Group();
 
     const textureLoader = new THREE.TextureLoader();
@@ -194,113 +175,8 @@ function createGreenDiceMesh(){
     const textureCube3 = []
 
     for (let i=0; i<6; i++){
-        const texturePath = `./image/green${i}.png`;
+        const texturePath = `./image/${color}${i}.png`;
 
-        const material = new THREE.MeshStandardMaterial({
-            map: textureLoader.load(texturePath),
-        });
-        textureCube3.push(material);
-    }
-    const plane = new THREE.Mesh(geometry, textureCube3);
-    diceMesh.add(plane);
-
-    return diceMesh;
-}
-
-function createBlueDiceMesh(){
-    const diceMesh = new THREE.Group();
-
-    const textureLoader = new THREE.TextureLoader();
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-    const textureCube3 = []
-
-    for (let i=0; i<6; i++){
-        const texturePath = `./image/blue${i}.png`;
-        const material = new THREE.MeshStandardMaterial({
-            map: textureLoader.load(texturePath),
-        });
-        textureCube3.push(material);
-    }
-    const plane = new THREE.Mesh(geometry, textureCube3);
-    diceMesh.add(plane);
-
-    return diceMesh;
-}
-
-function createDarkDiceMesh(){
-    const diceMesh = new THREE.Group();
-
-    const textureLoader = new THREE.TextureLoader();
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-    const textureCube3 = []
-
-    for (let i=0; i<6; i++){
-        const texturePath = `./image/dark${i}.png`;
-        const material = new THREE.MeshStandardMaterial({
-            map: textureLoader.load(texturePath),
-        });
-        textureCube3.push(material);
-    }
-    const plane = new THREE.Mesh(geometry, textureCube3);
-    diceMesh.add(plane);
-
-    return diceMesh;
-}
-
-function createOrangeDiceMesh(){
-    const diceMesh = new THREE.Group();
-
-    const textureLoader = new THREE.TextureLoader();
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-    const textureCube3 = []
-
-    for (let i=0; i<6; i++){
-        const texturePath = `./image/orange${i}.png`;
-        const material = new THREE.MeshStandardMaterial({
-            map: textureLoader.load(texturePath),
-        });
-        textureCube3.push(material);
-    }
-    const plane = new THREE.Mesh(geometry, textureCube3);
-    diceMesh.add(plane);
-
-    return diceMesh;
-}
-
-function createEnemyDiceMesh() {
-    const diceMesh = new THREE.Group();
-
-    const textureLoader = new THREE.TextureLoader();
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-    const textureCube3 = []
-
-    for (let i=0; i<6; i++){
-        const texturePath = `./image/enemy${i}.png`;
-        const material = new THREE.MeshStandardMaterial({
-            map: textureLoader.load(texturePath),
-        });
-        textureCube3.push(material);
-    }
-    const plane = new THREE.Mesh(geometry, textureCube3);
-    diceMesh.add(plane);
-
-    return diceMesh;
-}
-
-function createRedDiceMesh(){
-    const diceMesh = new THREE.Group();
-
-    const textureLoader = new THREE.TextureLoader();
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-
-    const textureCube3 = []
-
-    for (let i=0; i<6; i++){
-        const texturePath = `./image/red${i}.png`;
         const material = new THREE.MeshStandardMaterial({
             map: textureLoader.load(texturePath),
         });
@@ -315,30 +191,12 @@ function createRedDiceMesh(){
 //createDice 則是將外觀模型和物理特性結合起來，並將骰子加入場景和物理世界，以實現模擬物理行為的效果。
 function createDice(color) {
 
-    let mesh = createYellowDiceMesh().clone();
-
-    if (color === "red"){
-        mesh = createRedDiceMesh().clone()
-    }else if(color === "orange"){
-        mesh = createOrangeDiceMesh().clone()   
-    }else if(color === "yellow"){
-        mesh = createYellowDiceMesh().clone()   
-    }else if(color === "blue"){
-        mesh = createBlueDiceMesh().clone()   
-    }else if(color === "green"){
-        mesh = createGreenDiceMesh().clone()   
-    }else if(color === "enemy"){
-        mesh = createEnemyDiceMesh().clone()   
-    }else if(color === "dark"){
-        mesh = createDarkDiceMesh().clone()   
-    }
-    ;
-
+    let mesh = createDiceMesh(color).clone();
     
     scene.add(mesh);
 
     const body = new CANNON.Body({
-        mass: 1,
+        mass: 3,
         shape: new CANNON.Box(new CANNON.Vec3(.5, .5, .5)),
         sleepTimeLimit: .1
     });
@@ -347,54 +205,6 @@ function createDice(color) {
     return { mesh, body, color };
 }
 
-function createBoxGeometry() {
-
-    let boxGeometry = new THREE.BoxGeometry(1, 1, 1, params.segments, params.segments, params.segments);
-
-    const positionAttr = boxGeometry.attributes.position;
-    const subCubeHalfSize = .5 - params.edgeRadius;
-
-    //替骰子做圓角的總覽
-    for (let i = 0; i < positionAttr.count; i++) {
-
-        let position = new THREE.Vector3().fromBufferAttribute(positionAttr, i);
-
-        const subCube = new THREE.Vector3(Math.sign(position.x), Math.sign(position.y), Math.sign(position.z)).multiplyScalar(subCubeHalfSize);
-        const addition = new THREE.Vector3().subVectors(position, subCube);
-
-        if (Math.abs(position.x) > subCubeHalfSize && Math.abs(position.y) > subCubeHalfSize && Math.abs(position.z) > subCubeHalfSize) {
-            addition.normalize().multiplyScalar(params.edgeRadius);
-            position = subCube.add(addition);
-        } else if (Math.abs(position.x) > subCubeHalfSize && Math.abs(position.y) > subCubeHalfSize) {
-            addition.z = 0;
-            addition.normalize().multiplyScalar(params.edgeRadius);
-            position.x = subCube.x + addition.x;
-            position.y = subCube.y + addition.y;
-        } else if (Math.abs(position.x) > subCubeHalfSize && Math.abs(position.z) > subCubeHalfSize) {
-            addition.y = 0;
-            addition.normalize().multiplyScalar(params.edgeRadius);
-            position.x = subCube.x + addition.x;
-            position.z = subCube.z + addition.z;
-        } else if (Math.abs(position.y) > subCubeHalfSize && Math.abs(position.z) > subCubeHalfSize) {
-            addition.x = 0;
-            addition.normalize().multiplyScalar(params.edgeRadius);
-            position.y = subCube.y + addition.y;
-            position.z = subCube.z + addition.z;
-        }
-
-
-        positionAttr.setXYZ(i, position.x, position.y, position.z);
-    }
-
-
-    boxGeometry.deleteAttribute('normal');
-    boxGeometry.deleteAttribute('uv');
-    boxGeometry = BufferGeometryUtils.mergeVertices(boxGeometry);
-
-    boxGeometry.computeVertexNormals();
-
-    return boxGeometry;
-}
 
 function addDiceEvents(dice, color) {
     dice.body.addEventListener('sleep', (e) => {
@@ -409,168 +219,171 @@ function addDiceEvents(dice, color) {
         let isHalfPi = (angle) => Math.abs(angle - .5 * Math.PI) < eps;
         let isMinusHalfPi = (angle) => Math.abs(.5 * Math.PI + angle) < eps;
         let isPiOrMinusPi = (angle) => (Math.abs(Math.PI - angle) < eps || Math.abs(Math.PI + angle) < eps);
-
-    if (color === "red"){
-        if (isZero(euler.z)) {
-            if (isZero(euler.x)) {
+    
+    switch (color){
+        case "red":
+            if (isZero(euler.z)) {
+              if (isZero(euler.x)) {
                 showRollResults("red2");
-            } else if (isHalfPi(euler.x)) {
+              } else if (isHalfPi(euler.x)) {
                 showRollResults("red5");
-            } else if (isMinusHalfPi(euler.x)) {
+              } else if (isMinusHalfPi(euler.x)) {
                 showRollResults("red4");
-            } else if (isPiOrMinusPi(euler.x)) {
+              } else if (isPiOrMinusPi(euler.x)) {
                 showRollResults("red3");
+              } else {
+                // landed on edge => wait to fall on side and fire the event again
+                dice.body.allowSleep = true;
+              }
+            } else if (isHalfPi(euler.z)) {
+              showRollResults("red0");
+            } else if (isMinusHalfPi(euler.z)) {
+              showRollResults("red1");
+            } else {
+              // landed on edge => wait to fall on side and fire the event again
+              dice.body.allowSleep = true;
+            }
+            break;
+        case "yellow":
+            if (isZero(euler.z)) {
+                if (isZero(euler.x)) {
+                    showRollResults("yellow2");
+                } else if (isHalfPi(euler.x)) {
+                    showRollResults("yellow5");
+                } else if (isMinusHalfPi(euler.x)) {
+                    showRollResults("yellow4");
+                } else if (isPiOrMinusPi(euler.x)) {
+                    showRollResults("yellow3");
+                } else {
+
+                    dice.body.allowSleep = true;
+                }
+            } else if (isHalfPi(euler.z)) {
+                showRollResults("yellow0");
+            } else if (isMinusHalfPi(euler.z)) {
+                showRollResults("yellow1");
+            } else {
+                dice.body.allowSleep = true;
+            }
+            break;
+        case "orange":
+            if (isZero(euler.z)) {
+                if (isZero(euler.x)) {
+                    showRollResults("orange2");
+                } else if (isHalfPi(euler.x)) {
+                    showRollResults("orange5");
+                } else if (isMinusHalfPi(euler.x)) {
+                    showRollResults("orange4");
+                } else if (isPiOrMinusPi(euler.x)) {
+                    showRollResults("orange3");
+                } else {
+                    // landed on edge => wait to fall on side and fire the event again
+                    dice.body.allowSleep = true;
+                }
+            } else if (isHalfPi(euler.z)) {
+                showRollResults("orange0");
+            } else if (isMinusHalfPi(euler.z)) {
+                showRollResults("orange1");
             } else {
                 // landed on edge => wait to fall on side and fire the event again
                 dice.body.allowSleep = true;
             }
-        } else if (isHalfPi(euler.z)) {
-            showRollResults("red0");
-        } else if (isMinusHalfPi(euler.z)) {
-            showRollResults("red1");
-        } else {
-            // landed on edge => wait to fall on side and fire the event again
-            dice.body.allowSleep = true;
-        }
-    }else if (color === "yellow"){
-        if (isZero(euler.z)) {
-            if (isZero(euler.x)) {
-                showRollResults("yellow2");
-            } else if (isHalfPi(euler.x)) {
-                showRollResults("yellow5");
-            } else if (isMinusHalfPi(euler.x)) {
-                showRollResults("yellow4");
-            } else if (isPiOrMinusPi(euler.x)) {
-                showRollResults("yellow3");
+            break;
+        case "blue":
+            if (isZero(euler.z)) {
+                if (isZero(euler.x)) {
+                    showRollResults("blue2");
+                } else if (isHalfPi(euler.x)) {
+                    showRollResults("blue5");
+                } else if (isMinusHalfPi(euler.x)) {
+                    showRollResults("blue4");
+                } else if (isPiOrMinusPi(euler.x)) {
+                    showRollResults("blue3");
+                } else {
+                    // landed on edge => wait to fall on side and fire the event again
+                    dice.body.allowSleep = true;
+                }
+            } else if (isHalfPi(euler.z)) {
+                showRollResults("blue0");
+            } else if (isMinusHalfPi(euler.z)) {
+                showRollResults("blue1");
             } else {
                 // landed on edge => wait to fall on side and fire the event again
                 dice.body.allowSleep = true;
             }
-        } else if (isHalfPi(euler.z)) {
-            showRollResults("yellow0");
-        } else if (isMinusHalfPi(euler.z)) {
-            showRollResults("yellow1");
-        } else {
-            // landed on edge => wait to fall on side and fire the event again
-            dice.body.allowSleep = true;
-        }
-    }else if (color === "orange"){
-        if (isZero(euler.z)) {
-            if (isZero(euler.x)) {
-                showRollResults("orange2");
-            } else if (isHalfPi(euler.x)) {
-                showRollResults("orange5");
-            } else if (isMinusHalfPi(euler.x)) {
-                showRollResults("orange4");
-            } else if (isPiOrMinusPi(euler.x)) {
-                showRollResults("orange3");
+            break;
+        case "geeen":
+            if (isZero(euler.z)) {
+                if (isZero(euler.x)) {
+                    showRollResults("green2");
+                } else if (isHalfPi(euler.x)) {
+                    showRollResults("green5");
+                } else if (isMinusHalfPi(euler.x)) {
+                    showRollResults("green4");
+                } else if (isPiOrMinusPi(euler.x)) {
+                    showRollResults("green3");
+                } else {
+                    // landed on edge => wait to fall on side and fire the event again
+                    dice.body.allowSleep = true;
+                }
+            } else if (isHalfPi(euler.z)) {
+                showRollResults("green0");
+            } else if (isMinusHalfPi(euler.z)) {
+                showRollResults("green1");
             } else {
                 // landed on edge => wait to fall on side and fire the event again
                 dice.body.allowSleep = true;
             }
-        } else if (isHalfPi(euler.z)) {
-            showRollResults("orange0");
-        } else if (isMinusHalfPi(euler.z)) {
-            showRollResults("orange1");
-        } else {
-            // landed on edge => wait to fall on side and fire the event again
-            dice.body.allowSleep = true;
-        }
-    }else if (color === "blue"){
-        if (isZero(euler.z)) {
-            if (isZero(euler.x)) {
-                showRollResults("blue2");
-            } else if (isHalfPi(euler.x)) {
-                showRollResults("blue5");
-            } else if (isMinusHalfPi(euler.x)) {
-                showRollResults("blue4");
-            } else if (isPiOrMinusPi(euler.x)) {
-                showRollResults("blue3");
+            break;
+        case "dark":
+            if (isZero(euler.z)) {
+                if (isZero(euler.x)) {
+                    showRollResults("dark2");
+                } else if (isHalfPi(euler.x)) {
+                    showRollResults("dark5");
+                } else if (isMinusHalfPi(euler.x)) {
+                    showRollResults("dark4");
+                } else if (isPiOrMinusPi(euler.x)) {
+                    showRollResults("dark3");
+                } else {
+                    // landed on edge => wait to fall on side and fire the event again
+                    dice.body.allowSleep = true;
+                }
+            } else if (isHalfPi(euler.z)) {
+                showRollResults("dark0");
+            } else if (isMinusHalfPi(euler.z)) {
+                showRollResults("dark1");
             } else {
                 // landed on edge => wait to fall on side and fire the event again
                 dice.body.allowSleep = true;
             }
-        } else if (isHalfPi(euler.z)) {
-            showRollResults("blue0");
-        } else if (isMinusHalfPi(euler.z)) {
-            showRollResults("blue1");
-        } else {
-            // landed on edge => wait to fall on side and fire the event again
-            dice.body.allowSleep = true;
-        }
-    }else if (color === "green"){
-        if (isZero(euler.z)) {
-            if (isZero(euler.x)) {
-                showRollResults("green2");
-            } else if (isHalfPi(euler.x)) {
-                showRollResults("green5");
-            } else if (isMinusHalfPi(euler.x)) {
-                showRollResults("green4");
-            } else if (isPiOrMinusPi(euler.x)) {
-                showRollResults("green3");
+            break;
+        case "enemy":
+            if (isZero(euler.z)) {
+                if (isZero(euler.x)) {
+                    showRollResults("enemy2");
+                } else if (isHalfPi(euler.x)) {
+                    showRollResults("enemy5");
+                } else if (isMinusHalfPi(euler.x)) {
+                    showRollResults("enemy4");
+                } else if (isPiOrMinusPi(euler.x)) {
+                    showRollResults("enemy3");
+                } else {
+                    // landed on edge => wait to fall on side and fire the event again
+                    dice.body.allowSleep = true;
+                }
+            } else if (isHalfPi(euler.z)) {
+                showRollResults("enemy0");
+            } else if (isMinusHalfPi(euler.z)) {
+                showRollResults("enemy1");
             } else {
                 // landed on edge => wait to fall on side and fire the event again
                 dice.body.allowSleep = true;
             }
-        } else if (isHalfPi(euler.z)) {
-            showRollResults("green0");
-        } else if (isMinusHalfPi(euler.z)) {
-            showRollResults("green1");
-        } else {
-            // landed on edge => wait to fall on side and fire the event again
-            dice.body.allowSleep = true;
-        }
-    }else if (color === "dark"){
-        if (isZero(euler.z)) {
-            if (isZero(euler.x)) {
-                showRollResults("dark2");
-            } else if (isHalfPi(euler.x)) {
-                showRollResults("dark5");
-            } else if (isMinusHalfPi(euler.x)) {
-                showRollResults("dark4");
-            } else if (isPiOrMinusPi(euler.x)) {
-                showRollResults("dark3");
-            } else {
-                // landed on edge => wait to fall on side and fire the event again
-                dice.body.allowSleep = true;
-            }
-        } else if (isHalfPi(euler.z)) {
-            showRollResults("dark0");
-        } else if (isMinusHalfPi(euler.z)) {
-            showRollResults("dark1");
-        } else {
-            // landed on edge => wait to fall on side and fire the event again
-            dice.body.allowSleep = true;
-        }
-    }else if (color === "enemy"){
-        if (isZero(euler.z)) {
-            if (isZero(euler.x)) {
-                showRollResults("enemy2");
-            } else if (isHalfPi(euler.x)) {
-                showRollResults("enemy5");
-            } else if (isMinusHalfPi(euler.x)) {
-                showRollResults("enemy4");
-            } else if (isPiOrMinusPi(euler.x)) {
-                showRollResults("enemy3");
-            } else {
-                // landed on edge => wait to fall on side and fire the event again
-                dice.body.allowSleep = true;
-            }
-        } else if (isHalfPi(euler.z)) {
-            showRollResults("enemy0");
-        } else if (isMinusHalfPi(euler.z)) {
-            showRollResults("enemy1");
-        } else {
-            // landed on edge => wait to fall on side and fire the event again
-            dice.body.allowSleep = true;
-        }
+            break;
     }
     });
 }
-
-
-
-
 
 function showRollResults(score) {
     const diceAttributes = {
@@ -688,7 +501,9 @@ function showRollResults(score) {
     totalAttributes.dark_skill += attributes.dark_skill || 0;
 
     
-        scoreResult.textContent = `劍: ${totalAttributes.att || 0}, 盾: ${totalAttributes.def || 0}, 回魔: ${totalAttributes.mp || 0}, 魔手: ${totalAttributes.scratches || 0},爪痕: ${totalAttributes.claw || 0},暗影狀態: ${totalAttributes.dark_skill || 0},` 
+    scoreResult.innerHTML = `劍: ${totalAttributes.att || 0}, 盾: ${totalAttributes.def || 0}, 回魔: ${totalAttributes.mp || 0}
+    ,<br>魔手: ${totalAttributes.scratches || 0}, 爪痕: ${totalAttributes.claw || 0}, 暗影狀態: ${totalAttributes.dark_skill || 0},`;
+
     
 }
 
@@ -715,7 +530,7 @@ function updateSceneSize() {
 function throwDice() {
     scoreResult.innerHTML = '';
     resetTotalAttributes();
-    console.log(diceArray, "aabb")
+    console.log(diceArray, "rolling")
 
     diceArray.forEach((d, dIdx) => {
 

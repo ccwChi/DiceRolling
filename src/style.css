@@ -153,9 +153,59 @@ body.open .sidebar{
     background-color: gray;
 }
 
+.separator {
+    border-top: 1px solid #696868;
+    margin: 10px;
+  }
+.enemylogo{
+    display: flex; /* 使用弹性盒子模型 */
+    align-items: center; /* 垂直居中对齐元素 */
+    justify-content: center; /* 水平居中对齐元素 */
+    font-size: 16px;
+}
 
 
-.sidebar-menu > button:hover{
+.box {
+    /* border: 1px solid #eee; */
+    margin-left: 80px;
+    margin-top: 6px;
+    height: 100px;
+    
+  }
+  
+  .titlebox {
+    display: flex;
+    overflow: hidden;
+    align-items: center; /* 垂直居中对齐元素 */
+  }
+  
+ h2 {
+    display: flex;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    margin: 0.3em 0;
+    width: 80px;
+  }
+  
+  .textbox {
+    display: flex;
+    overflow: hidden;
+    align-items: center; /* 垂直居中对齐元素 */
+    width: 260px;
+  }
+
+ .textbox> p {
+    display: flex;
+    
+    margin: 0.3em 0;
+    word-spacing: 3px;
+    font-weight: bold;
+    font-size: 18px;
+    
+    
+  }
+  
+
+/* .sidebar-menu > button:hover{
     border-left: 3px solid #f9f9f9;
 }
 
@@ -170,47 +220,20 @@ body.open .sidebar{
     color: #f9f9f9;
     transition: all 0.4s;
     
-}
+} */
 
-.sidebar-menu > button:hover > i, .sidebar-menu > button:hover > span{
+/* .sidebar-menu > button:hover > i, .sidebar-menu > button:hover > span{
     color: #bdbdbd;
-}
+} */
 
-.sidebar-menu > button > span{
+/* .sidebar-menu > button > span{
     color: #f9f9f9;
     opacity: 0;
     transition: all 0.4s;
-}
+} */
 
-body.open .sidebar-menu > button > span{
+/* body.open .sidebar-menu > button > span{
     opacity: 1;
     transition: all 0.4s;
-}
+} */
 
-
-
-
-.button-47 {
-  align-items: center;
-  background: #FFFFFF;
-  border: 0 solid #E2E8F0;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  box-sizing: border-box;
-  color: #1A202C;
-  display: inline-flex;
-  font-family: Inter, sans-serif;
-  font-size: 1rem;
-  font-weight: 700;
-  height: 56px;
-  justify-content: center;
-  line-height: 24px;
-  overflow-wrap: break-word;
-  padding: 24px;
-  text-decoration: none;
-  width: auto;
-  border-radius: 8px;
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}

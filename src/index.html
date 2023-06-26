@@ -16,12 +16,12 @@
                 <button type="button" class="sidebar-burger" onclick="toggleSidebar()">
                     <i class='bx bx-menu'></i>
                 </button>
-                <button id="roll-btn">重丟</button>
+                <!-- <button id="roll-btn">重丟</button> -->
             </header>
 
             <nav class="sidebar-menu">
                 <div class="dicediv">
-                    <button type="button " class="yellow subtraction-dice-btn" data-color="orange"> 
+                    <button type="button " class="yellow subtraction-dice-btn" data-color="yellow"> 
                         <i class='bx bx-minus '></i>
                     </button>
                     <button type="button"  class="yellow add-dice-btn" data-color="yellow">
@@ -29,45 +29,51 @@
                     </button>
                 </div>
                 <div class="dicediv">
-                    <button type="button " class="orange">
+                    <button type="button " class="orange subtraction-dice-btn" data-color="orange" >
                         <i class='bx bx-minus '></i>
                     </button>
-                    <button type="button"  class="orange">
+                    <button type="button"  class="orange add-dice-btn" data-color="orange">
                         <i class='bx bx-plus'></i>
                     </button>
                 </div>                <div class="dicediv">
-                    <button type="button " class="red">
+                    <button type="button " class="red subtraction-dice-btn" data-color="red">
                         <i class='bx bx-minus '></i>
                     </button>
-                    <button type="button"  class="red">
+                    <button type="button"  class="red add-dice-btn" data-color="red">
                         <i class='bx bx-plus'></i>
                     </button>
                 </div>                <div class="dicediv">
-                    <button type="button " class="green">
+                    <button type="button " class="green subtraction-dice-btn" data-color="green">
                         <i class='bx bx-minus '></i>
                     </button>
-                    <button type="button"  class="green">
+                    <button type="button"  class="green add-dice-btn" data-color="green">
                         <i class='bx bx-plus'></i>
                     </button>
                 </div>                <div class="dicediv">
-                    <button type="button " class="blue">
+                    <button type="button " class="blue subtraction-dice-btn" data-color="blue">
                         <i class='bx bx-minus '></i>
                     </button>
-                    <button type="button"  class="blue">
+                    <button type="button"  class="blue add-dice-btn" data-color="blue">
                         <i class='bx bx-plus'></i>
                     </button>
                 </div>                <div class="dicediv">
-                    <button type="button " class="dark">
+                    <button type="button " class="dark subtraction-dice-btn" data-color="dark">
                         <i class='bx bx-minus '></i>
                     </button>
-                    <button type="button"  class="dark">
+                    <button type="button"  class="dark add-dice-btn" data-color="dark">
                         <i class='bx bx-plus'></i>
                     </button>
-                </div>                <div class="dicediv">
-                    <button type="button " class="enemy">
+                </div>
+                
+                <div class="separator"></div>
+                <div class="enemylogo">
+                    <P>敵人</P>
+                </div>
+                 <div class="dicediv">
+                    <button type="button " class="enemy subtraction-dice-btn" data-color="enemy">
                         <i class='bx bx-minus '></i>
                     </button>
-                    <button type="button"  class="enemy">
+                    <button type="button"  class="enemy add-dice-btn" data-color="enemy">
                         <i class='bx bx-plus'></i>
                     </button>
                 </div>
@@ -76,9 +82,10 @@
 
         </div>
     </nav>
-	<div class="score">Score: <span id="score-result"></span></div>
+    <div class="box">
+	<div class="titlebox"><h2>結算: </h2><div class="textbox"><p id="score-result"></p></div></div></div>
     <div class="content">
-        <canvas id="canvas"></canvas>
+        <canvas id="canvas" onclick="closeHamberger()"></canvas>
         
     </div>
 </main>
@@ -86,6 +93,7 @@
 
     <script type="text/javascript">
         const toggleSidebar = () => document.body.classList.toggle("open");
+        const closeHamberger=()=> document.body.removeAttribute("class");;
     </script>
 
 </body>
