@@ -169,8 +169,8 @@ body.open .sidebar{
     /* border: 1px solid #eee; */
     margin-left: 80px;
     margin-top: 6px;
-    height: 100px;
-    
+    height: 140px;
+    z-index: 10;
   }
   
   .titlebox {
@@ -185,7 +185,11 @@ body.open .sidebar{
     margin: 0.3em 0;
     width: 80px;
   }
-  
+  p {
+    z-index: 10;
+    font-family:"Segoe UI",Arial,sans-serif;font-weight:400;margin:10px 0
+
+  }
   .textbox {
     display: flex;
     overflow: hidden;
@@ -203,8 +207,118 @@ body.open .sidebar{
     
     
   }
-  
+  canvas{
+    z-index: -1000;
+  }
+  #rerolliing {
+    align-items: center;
+    position: absolute;
+    bottom: 2%;
+    right: 2%; 
+    border: 0 solid #E2E8F0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    color: #1A202C;
+    display: inline-flex;
+    font-size: 15px;
+    height: 40px;
+    width: 120px;
+    justify-content: center;
+    overflow-wrap: break-word;
+    padding: 16px;
+    text-decoration: none;
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin: 6px;
+    opacity: 1;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
 
+  #rerolliing.done{
+    align-items: center;
+    position: absolute;
+    bottom: 2%;
+    right: 2%; 
+    border: 0 solid #E2E8F0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    color: #cdd3e4;
+    background-color: #091128;
+    display: inline-flex;
+    font-size: 15px;
+    height: 40px;
+    width: 120px;
+    justify-content: center;
+    overflow-wrap: break-word;
+    padding: 16px;
+    text-decoration: none;
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin: 6px;
+    opacity: 1;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+
+  #ignoring {
+    align-items: center;
+    position: absolute;
+    bottom: 2%;
+    left: 2%; 
+    border: 0 solid #E2E8F0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    color: #1A202C;
+    display: inline-flex;
+    font-size: 15px;
+    height: 40px;
+    width: 120px;
+    justify-content: center;
+    overflow-wrap: break-word;
+    padding: 16px;
+    text-decoration: none;
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin: 6px;
+    opacity: 1;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
+
+  #ignoring.done{
+    align-items: center;
+    position: absolute;
+    left: 2%;
+    bottom: 2%; 
+    border: 0 solid #E2E8F0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    color: #cdd3e4;
+    background-color: #091128;
+    display: inline-flex;
+    font-size: 15px;
+    height: 40px;
+    width: 120px;
+    justify-content: center;
+    overflow-wrap: break-word;
+    padding: 16px;
+    text-decoration: none;
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin: 6px;
+    opacity: 1;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  }
 /* .sidebar-menu > button:hover{
     border-left: 3px solid #f9f9f9;
 }
