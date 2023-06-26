@@ -305,7 +305,7 @@ function destroyDice(color) {
     }
     updateCounter();
     calculateResults();
-    console.log("有刪除")
+    //console.log("有刪除")
 }
 
 function createDiceMesh(color) {
@@ -561,11 +561,11 @@ function calculateResults() {
         },
         blue: {
             "blue0": {},
-            "blue1": { def: 1 },
+            "blue1": {},
             "blue2": { def: 1 },
             "blue3": { def: 1 },
             "blue4": { def: 2 },
-            "blue5": { def: 3 },
+            "blue5": { def: 2 },
         },
         enemy: {
             "enemy0": {},
@@ -600,8 +600,8 @@ function calculateResults() {
         return filtered;
     }, {});
 
-    console.log("有發動cal", diceArray, diceFace, "過濾玩的filteredItems", filterItems)
-    console.log(diceFace, "執行diceFace迴圈錢的diceFace")
+    //console.log("有發動cal", diceArray, diceFace, "過濾玩的filteredItems", filterItems)
+    //console.log(diceFace, "執行diceFace迴圈錢的diceFace")
 
     for (const face in filterItems) {
         console.log("執行了迴圈中，目前有哪些face", face)
@@ -701,7 +701,7 @@ function throwDice() {
         dark_skill: 0
     };
 
-    console.log("push前", diceArray)
+    //console.log("push前", diceArray)
     for (let i = tempArray.length - 1; i >= 0; i--) {
         const dice = tempArray[i];
         //console.log("看一下for有沒有工作", diceArray)
@@ -788,7 +788,7 @@ function ignoreDice(clickedObject) {
             diceArray.splice(i, 1);
             calculateResults();
             dice.body.allowSleep = true;
-            console.log("我點擊了單顆色子Face=", diceArray, totalAttributes)
+            //console.log("我點擊了單顆色子Face=", diceArray, totalAttributes)
         }
     }
 };
