@@ -27,18 +27,24 @@ const addDiceBtn = document.querySelectorAll('.add-dice-btn');
 const subtractionDiceBtn = document.querySelectorAll('.subtraction-dice-btn');
 const reRollButton = document.getElementById('rerolliing');
 const ignoreButton = document.getElementById('ignoring');
+const sideBarButton = document.getElementById('sidebar-burger');
 let ignoreing = false;
 let canReRolling = false;
+let doubleClick= true;
 reRollButton.addEventListener('click', function () {
     canReRolling = !canReRolling;
     if (canReRolling) {
         reRollButton.classList.add('done');
         reRollButton.textContent = '重骰中';
         canReRolling = true;
+        doubleClick= false;
+        calculateResults();
     } else {
         reRollButton.classList.remove('done');
         reRollButton.textContent = '重骰關閉中';
         canReRolling = false;
+        doubleClick= true;
+        calculateResults();
     }
 });
 ignoreButton.addEventListener('click', function () {
@@ -47,17 +53,27 @@ ignoreButton.addEventListener('click', function () {
         ignoreButton.classList.add('done');
         ignoreButton.textContent = '選忽視骰子';
         ignoreing = true;
+        doubleClick= false;
+        calculateResults();
     } else {
         ignoreButton.classList.remove('done');
         ignoreButton.textContent = '忽視關閉中';
         ignoreing = false;
+        doubleClick= true;
+        calculateResults();
         //console.log(canReRolling);
     }
 });
+// const sidebarBurger = document.getElementById("sidebar-burger");
+// sidebarBurger.addEventListener("click", () => document.body.classList.toggle("open"))
+// sidebarBurger.addEventListener("touchend", () => document.body.classList.toggle("open"));
+
 let renderer, scene, camera, physicsWorld;
+
 let diceIdCounter = 1;
 var redCount = 0, orangeCount = 0, yellowCount = 0, blueCount = 0, greenCount = 0, darkCount = 0, enemyCount = 0;
-let diceFace = {}
+let diceFace = {};
+let checkFace= {};
 const diceArray = [];
 let totalAttributes = {
     att: 0,
@@ -77,15 +93,83 @@ let attributes = {
 };
 let tempArray = []
 let lastTouchTime = 0;
+const diceAttributes = {
+    yellow: {
+        "yellow0": {},
+        "yellow1": { att: 1 },
+        "yellow2": { att: 1 },
+        "yellow3": { att: 2 },
+        "yellow4": { mp: 1, att: 1 },
+        "yellow5": { mp: 1, att: 1 }
+    },
+    orange: {
+        "orange0": {},
+        "orange1": { att: 1 },
+        "orange2": { att: 2 },
+        "orange3": { att: 2 },
+        "orange4": { mp: 1, att: 1 },
+        "orange5": { att: 3 }
+    },
+    red: {
+        "red0": { att: 1 },
+        "red1": { att: 1 },
+        "red2": { mp: 1, att: 1 },
+        "red3": { mp: 1, att: 2 },
+        "red4": { att: 3 },
+        "red5": { att: 4 }
+    },
+    green: {
+        "green0": {},
+        "green1": { def: 1 },
+        "green2": { def: 1 },
+        "green3": { def: 1 },
+        "green4": { def: 2 },
+        "green5": { def: 3 },
+    },
+    blue: {
+        "blue0": {},
+        "blue1": {},
+        "blue2": { def: 1 },
+        "blue3": { def: 1 },
+        "blue4": { def: 1 },
+        "blue5": { def: 2 },
+    },
+    enemy: {
+        "enemy0": {},
+        "enemy1": { scratches: 1 },
+        "enemy2": { scratches: 1 },
+        "enemy3": { claw: 1 },
+        "enemy4": { claw: 1 },
+        "enemy5": { scratches: 1, claw: 1 }
+    },
+    dark: {
+        "dark0": { att: 1 },
+        "dark1": { att: 2 },
+        "dark2": { att: 3 },
+        "dark3": { mp: 1 },
+        "dark4": { mp: 2 },
+        "dark5": { dark_skill: 1 },
+    }
+}
 
+// canvasEl.addEventListener('click',()=>{
+//     document.body.classList.remove("open")
+// })
+// sideBarButton.addEventListener("click", ()=>{
+//     document.body.classList.toggle("open")
+// })
+
+window.addEventListener('dblclick',()=>{
+    if (doubleClick){throwDice()}});
 //用來作手機雙擊反應用
 document.addEventListener('touchstart', (event) => {
+    if (doubleClick){
     const currentTime = new Date().getTime();
     const timeSinceLastTouch = currentTime - lastTouchTime;
-    if (timeSinceLastTouch <= 300 && timeSinceLastTouch >= 100) {
+    if (timeSinceLastTouch <= 280 && timeSinceLastTouch >= 100) {
         throwDice();
     }
-    lastTouchTime = currentTime;
+    lastTouchTime = currentTime;}
 });
 
 const raycaster = new THREE.Raycaster();
@@ -97,7 +181,7 @@ canvasEl.addEventListener('mousedown', onPointerDown);
 canvasEl.addEventListener('touchstart', onPointerDown);
 
 window.addEventListener('resize', updateSceneSize);
-window.addEventListener('dblclick', throwDice);
+window.addEventListener('click', calculateResults);
 
 addDiceBtn.forEach(function (btn) {
     btn.addEventListener('click', function () {
@@ -304,7 +388,7 @@ function destroyDice(color) {
             break;
     }
     updateCounter();
-    calculateResults();
+
     //console.log("有刪除")
 }
 
@@ -347,7 +431,7 @@ function createDice(color) {
     const id = `${color}_${diceIdCounter}`; // 生成唯一的骰子编号
     diceIdCounter++;
 
-    return { mesh, body, color, id, userData: { form: 'dice' } };
+    return { mesh, body, color, id };
 }
 
 function addDiceEvents(dice, color) {
@@ -355,235 +439,44 @@ function addDiceEvents(dice, color) {
 
         dice.body.allowSleep = false;
 
-        const euler = new CANNON.Vec3();
-        e.target.quaternion.toEuler(euler);
-
+        for (let i = 0; i < diceArray.length; i++){ 
+            let diceObj = diceArray[i];
+            let euler = new CANNON.Vec3();
+            diceObj.body.quaternion.toEuler(euler);
+            let diceId = diceObj.id;
+            let color=diceObj.color;
+  
         const eps = .1;
         let isZero = (angle) => Math.abs(angle) < eps;
         let isHalfPi = (angle) => Math.abs(angle - .5 * Math.PI) < eps;
         let isMinusHalfPi = (angle) => Math.abs(.5 * Math.PI + angle) < eps;
         let isPiOrMinusPi = (angle) => (Math.abs(Math.PI - angle) < eps || Math.abs(Math.PI + angle) < eps);
 
-        switch (color) {
-            case "red":
-                if (isZero(euler.z)) {
-                    if (isZero(euler.x)) {
-                        showRollResults(dice.id, "red2");
-                    } else if (isHalfPi(euler.x)) {
-                        showRollResults(dice.id, "red5");
-                    } else if (isMinusHalfPi(euler.x)) {
-                        showRollResults(dice.id, "red4");
-                    } else if (isPiOrMinusPi(euler.x)) {
-                        showRollResults(dice.id, "red3");
-                    } else {
-                        dice.body.allowSleep = true;
-                    }
-                } else if (isHalfPi(euler.z)) {
-                    showRollResults(dice.id, "red0");
-                } else if (isMinusHalfPi(euler.z)) {
-                    showRollResults(dice.id, "red1");
-                } else {
-                    dice.body.allowSleep = true;
-                }
-                break;
-            case "yellow":
-                if (isZero(euler.z)) {
-                    if (isZero(euler.x)) {
-                        showRollResults(dice.id, "yellow2");
-                    } else if (isHalfPi(euler.x)) {
-                        showRollResults(dice.id, "yellow5");
-                    } else if (isMinusHalfPi(euler.x)) {
-                        showRollResults(dice.id, "yellow4");
-                    } else if (isPiOrMinusPi(euler.x)) {
-                        showRollResults(dice.id, "yellow3");
-                    } else {
-                        dice.body.allowSleep = true;
-                    }
-                } else if (isHalfPi(euler.z)) {
-                    showRollResults(dice.id, "yellow0");
-                } else if (isMinusHalfPi(euler.z)) {
-                    showRollResults(dice.id, "yellow1");
-                } else {
-                    dice.body.allowSleep = true;
-                }
-                break;
-            case "orange":
-                if (isZero(euler.z)) {
-                    if (isZero(euler.x)) {
-                        showRollResults(dice.id, "orange2");
-                    } else if (isHalfPi(euler.x)) {
-                        showRollResults(dice.id, "orange5");
-                    } else if (isMinusHalfPi(euler.x)) {
-                        showRollResults(dice.id, "orange4");
-                    } else if (isPiOrMinusPi(euler.x)) {
-                        showRollResults(dice.id, "orange3");
-                    } else {
-                        dice.body.allowSleep = true;
-                    }
-                } else if (isHalfPi(euler.z)) {
-                    showRollResults(dice.id, "orange0");
-                } else if (isMinusHalfPi(euler.z)) {
-                    showRollResults(dice.id, "orange1");
-                } else {
-                    dice.body.allowSleep = true;
-                }
-                break;
-            case "blue":
-                if (isZero(euler.z)) {
-                    if (isZero(euler.x)) {
-                        showRollResults(dice.id, "blue2");
-                    } else if (isHalfPi(euler.x)) {
-                        showRollResults(dice.id, "blue5");
-                    } else if (isMinusHalfPi(euler.x)) {
-                        showRollResults(dice.id, "blue4");
-                    } else if (isPiOrMinusPi(euler.x)) {
-                        showRollResults(dice.id, "blue3");
-                    } else {
-                        dice.body.allowSleep = true;
-                    }
-                } else if (isHalfPi(euler.z)) {
-                    showRollResults(dice.id, "blue0");
-                } else if (isMinusHalfPi(euler.z)) {
-                    showRollResults(dice.id, "blue1");
-                } else {
-                    dice.body.allowSleep = true;
-                }
-                break;
-            case "green":
-                if (isZero(euler.z)) {
-                    if (isZero(euler.x)) {
-                        showRollResults(dice.id, "green2");
-                    } else if (isHalfPi(euler.x)) {
-                        showRollResults(dice.id, "green5");
-                    } else if (isMinusHalfPi(euler.x)) {
-                        showRollResults(dice.id, "green4");
-                    } else if (isPiOrMinusPi(euler.x)) {
-                        showRollResults(dice.id, "green3");
-                    } else {
-                        dice.body.allowSleep = true;
-                    }
-                } else if (isHalfPi(euler.z)) {
-                    showRollResults(dice.id, "green0");
-                } else if (isMinusHalfPi(euler.z)) {
-                    showRollResults(dice.id, "green1");
-                } else {
-                    dice.body.allowSleep = true;
-                }
-                break;
-            case "dark":
-                if (isZero(euler.z)) {
-                    if (isZero(euler.x)) {
-                        showRollResults(dice.id, "dark2");
-                    } else if (isHalfPi(euler.x)) {
-                        showRollResults(dice.id, "dark5");
-                    } else if (isMinusHalfPi(euler.x)) {
-                        showRollResults(dice.id, "dark4");
-                    } else if (isPiOrMinusPi(euler.x)) {
-                        showRollResults(dice.id, "dark3");
-                    } else {
-                        dice.body.allowSleep = true;
-                    }
-                } else if (isHalfPi(euler.z)) {
-                    showRollResults(dice.id, "dark0");
-                } else if (isMinusHalfPi(euler.z)) {
-                    showRollResults(dice.id, "dark1");
-                } else {
-                    dice.body.allowSleep = true;
-                }
-                break;
-            case "enemy":
-                if (isZero(euler.z)) {
-                    if (isZero(euler.x)) {
-                        showRollResults(dice.id, "enemy2");
-                    } else if (isHalfPi(euler.x)) {
-                        showRollResults(dice.id, "enemy5");
-                    } else if (isMinusHalfPi(euler.x)) {
-                        showRollResults(dice.id, "enemy4");
-                    } else if (isPiOrMinusPi(euler.x)) {
-                        showRollResults(dice.id, "enemy3");
-                    } else {
-                        dice.body.allowSleep = true;
-                    }
-                } else if (isHalfPi(euler.z)) {
-                    showRollResults(dice.id, "enemy0");
-                } else if (isMinusHalfPi(euler.z)) {
-                    showRollResults(dice.id, "enemy1");
-                } else {
-                    dice.body.allowSleep = true;
-                }
-                break;
+        if (isZero(euler.z)) {
+            if (isZero(euler.x)) {
+              diceFace[diceId] = `${color}2`;
+            } else if (isHalfPi(euler.x)) {
+                diceFace[diceId] = `${color}5`;
+            } else if (isMinusHalfPi(euler.x)) {
+                diceFace[diceId] = `${color}4`;
+            } else if (isPiOrMinusPi(euler.x)) {
+                diceFace[diceId] = `${color}3`;;
+            }
+          } else if (isHalfPi(euler.z)) {
+            diceFace[diceId] = `${color}0`;;
+          } else if (isMinusHalfPi(euler.z)) {
+            diceFace[diceId] = `${color}1`;;
+          }
+          dice.body.allowSleep = true;
+          
         }
     });
 }
 
-function showRollResults(diceId, score) {
-
-    diceFace[diceId] = score;
-    //console.log(diceFace,"這裡是");
-    calculateResults();
-    //console.log("從showRollResult發動calculateResults")
-}
 
 function calculateResults() {
-    console.log("有發動cal", diceArray, diceFace)
-    const diceAttributes = {
-        yellow: {
-            "yellow0": {},
-            "yellow1": { att: 1 },
-            "yellow2": { att: 1 },
-            "yellow3": { att: 2 },
-            "yellow4": { mp: 1, att: 1 },
-            "yellow5": { mp: 1, att: 1 }
-        },
-        orange: {
-            "orange0": {},
-            "orange1": { att: 1 },
-            "orange2": { att: 2 },
-            "orange3": { att: 2 },
-            "orange4": { mp: 1, att: 1 },
-            "orange5": { att: 3 }
-        },
-        red: {
-            "red0": { att: 1 },
-            "red1": { att: 1 },
-            "red2": { mp: 1, att: 1 },
-            "red3": { mp: 1, att: 2 },
-            "red4": { att: 3 },
-            "red5": { att: 4 }
-        },
-        green: {
-            "green0": {},
-            "green1": { def: 1 },
-            "green2": { def: 1 },
-            "green3": { def: 1 },
-            "green4": { def: 2 },
-            "green5": { def: 3 },
-        },
-        blue: {
-            "blue0": {},
-            "blue1": {},
-            "blue2": { def: 1 },
-            "blue3": { def: 1 },
-            "blue4": { def: 2 },
-            "blue5": { def: 2 },
-        },
-        enemy: {
-            "enemy0": {},
-            "enemy1": { scratches: 1 },
-            "enemy2": { scratches: 1 },
-            "enemy3": { claw: 1 },
-            "enemy4": { claw: 1 },
-            "enemy5": { scratches: 1, claw: 1 }
-        },
-        dark: {
-            "dark0": { att: 1 },
-            "dark1": { att: 2 },
-            "dark2": { att: 3 },
-            "dark3": { mp: 1 },
-            "dark4": { mp: 2 },
-            "dark5": { dark_skill: 1 },
-        }
-    }
+    //console.log("有發動cal", diceArray, diceFace)
+    
     totalAttributes = {
         att: 0,
         def: 0,
@@ -592,7 +485,7 @@ function calculateResults() {
         claw: 0,
         dark_skill: 0
     };
-
+    checkDiceFaces();
     const filterItems = Object.keys(diceFace).reduce((filtered, key) => {
         if (diceArray.some(item => item.id === key)) {
             filtered[key] = diceFace[key];
@@ -604,7 +497,7 @@ function calculateResults() {
     //console.log(diceFace, "執行diceFace迴圈錢的diceFace")
 
     for (const face in filterItems) {
-        console.log("執行了迴圈中，目前有哪些face", face)
+        //console.log("執行了迴圈中，目前有哪些face", face)
         const faceValue = filterItems[face];
         attributes = {
             att: 0,
@@ -670,7 +563,13 @@ function calculateResults() {
     scoreResult.innerHTML = `劍: ${totalAttributes.att || ""}  盾: ${totalAttributes.def || ""}  回魔: ${totalAttributes.mp || ""}
     ,<br>魔手: ${totalAttributes.scratches || ""}  爪痕: ${totalAttributes.claw || ""}  暗影狀態: ${totalAttributes.dark_skill || ""},`;
     //console.log( totalAttributes.att,"算完");
-    console.log("最後結算後的diceface,totalAttributes", diceFace, totalAttributes)
+    //console.log("最後結算後的diceface,totalAttributes", diceFace, totalAttributes)
+    checkDiceFaces();
+    // }else {
+    //     diceFace = checkFace;
+    //     console.log("diceFace,checkFace",diceFace,checkFace)
+    //     calculateResults();
+    // }
 }
 
 
@@ -729,6 +628,7 @@ function throwDice() {
             new CANNON.Vec3(0, 0, .3)
         );
         d.body.allowSleep = true;
+        
     });
 }
 
@@ -771,26 +671,26 @@ function throwOneDice(clickedObject) {
                 new CANNON.Vec3(-force, force, 0),
                 new CANNON.Vec3(.5, .5, .5)
             );
-
             d.body.allowSleep = true;
+            
         }
     }
+    calculateResults();
 };
 
 function ignoreDice(clickedObject) {
     for (let i = 0; i < diceArray.length; i++) {
-
         if (diceArray[i].mesh.uuid === clickedObject.parent.uuid) {
-
             const dice = diceArray[i];
             tempArray.push(dice);
             dice.mesh.visible = false;
             diceArray.splice(i, 1);
-            calculateResults();
+            
             dice.body.allowSleep = true;
-            //console.log("我點擊了單顆色子Face=", diceArray, totalAttributes)
+            
         }
     }
+    calculateResults();
 };
 
 const updateCounter = () => {
@@ -811,3 +711,55 @@ const updateCounter = () => {
     enemyCounter.textContent = enemyCount;
 };
 
+function checkDiceFaces() {
+
+        for (let i = 0; i < diceArray.length; i++) {
+          let diceObj = diceArray[i];
+          let euler = new CANNON.Vec3();
+          diceObj.body.quaternion.toEuler(euler);
+          let diceId = diceObj.id;
+          let color=diceObj.color;
+
+          const eps = .1;
+          let isZero = (angle) => Math.abs(angle) < eps;
+          let isHalfPi = (angle) => Math.abs(angle - .5 * Math.PI) < eps;
+          let isMinusHalfPi = (angle) => Math.abs(.5 * Math.PI + angle) < eps;
+          let isPiOrMinusPi = (angle) => (Math.abs(Math.PI - angle) < eps || Math.abs(Math.PI + angle) < eps);
+            
+            
+          
+          if (isZero(euler.z)) {
+            if (isZero(euler.x)) {
+              checkFace[diceId] = `${color}2`;
+            } else if (isHalfPi(euler.x)) {
+              checkFace[diceId] = `${color}5`;
+            } else if (isMinusHalfPi(euler.x)) {
+              checkFace[diceId] = `${color}4`;
+            } else if (isPiOrMinusPi(euler.x)) {
+              checkFace[diceId] = `${color}3`;;
+            }
+          } else if (isHalfPi(euler.z)) {
+            checkFace[diceId] = `${color}0`;;
+          } else if (isMinusHalfPi(euler.z)) {
+            checkFace[diceId] = `${color}1`;;
+          }
+        }
+        return checkFace;
+  }
+
+//   function areObjectsEqual(obj1, obj2) {
+
+//     if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+//       return false;
+//     }
+  
+//     for (let key in obj1) {
+//       if (obj1.hasOwnProperty(key)) {
+//         if (!(key in obj2) || obj1[key] !== obj2[key]) {
+//           return false;
+//         }
+//       }
+//     }
+  
+//     return true;
+//   }

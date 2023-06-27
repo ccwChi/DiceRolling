@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.css"> -->
     <title>Rolling Dice</title>
 </head>
 
-<body>
+<body class="open">
     <button type="button" id="rerolliing">重骰模式</button>
     <button type="button" id="ignoring">忽視骰子</button>
     <nav class="sidebar">
         <div class="sidebar-inner">
             <header class="sidebar-header">
-                <button type="button" class="sidebar-burger" ontouchstart="toggleSidebar()" onclick="toggleSidebar()">
+                <button type="button" id="sidebar-burger" class="sidebar-burger" onclick="openHambeger()" ontouchstart="openHambeger()">
                     <i class='bx bx-menu'></i>
                 </button>
 
@@ -112,7 +112,7 @@
         <div class="titlebox">
             <h2>結算: </h2>
             <div class="textbox">
-                <p id="score-result">雙擊螢幕可以重骰</p>
+                <p id="score-result">雙擊螢幕重骰，點擊字欄或按鈕才會結算</p>
             </div>
         </div>
     </div>
@@ -124,9 +124,8 @@
     <script type="module" src="bundle.js"></script>
 
     <script type="text/javascript">
-const toggleSidebar = () => document.body.classList.toggle("open");
 const closeHamberger = () => document.body.classList.remove("open");
-
+const openHambeger = () => document.body.classList.toggle("open")
     </script>
 </body>
 </html>

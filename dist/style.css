@@ -1,92 +1,117 @@
 *{
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body{
-    margin: 0;
-    background: #f6eeee;
+  margin: 0;
+  background: #f6eeee;
 }
 
 .sidebar{
-    z-index: 1;
-    position: absolute;
-    overflow: hidden;
-    top: 0;
-    left: 0;
-    width: 60px;
-    height: 60px;
-    background: transparent;
-    opacity: 1;
-    transition: all 0.4s;
+  z-index: 1;
+  position: absolute;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  width: 60px;
+  height: 60px;
+  background: transparent;
+  opacity: 1;
+  transition: all 0.4s;
 }
 
 /* 按下漢堡後的寬度 */
 body.open .sidebar{
-    width: 200px;
-    height: 100%;
-    background-color: transparent;
-     opacity: 0.8;
+  width: 200px;
+  height:auto;
+  background-color: transparent;
+   opacity: 0.8;
+   background-color: rgba(23, 23, 24, 0.7);
+  border-radius: 20px;
 }
 
 .sidebar-header{
-    display: flex;
-    align-items: center;
-    height: 60px;
-    background: rgba(0, 0, 0, 0.1);
-    border: 3px solid transparent;
-    background-color: transparent;
-    transition: all 0.4s;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.1);
+  border: 3px solid transparent;
+  background-color: transparent;
+  transition: all 0.4s;
 }
 
 
 .sidebar-burger{
-    height: 100%;
-    display: grid;
-    border-color: transparent;
-    background-color: transparent;
+  height: 100%;
+  display: grid;
+  border-color: transparent;
+  background-color: transparent;
 }
 
 .sidebar-burger > i, body.open .sidebar-burger > i{
-    height: 100%;
-    display: flex; /* 使用弹性盒子模型 */
-    align-items: center; /* 垂直居中对齐元素 */
-    justify-content: center; /* 水平居中对齐元素 */
-    font-size: 35px;
-    color: #2c1c1c;
-    transition: all 0.4s;
-    
+  height: 100%;
+  display: flex; /* 使用弹性盒子模型 */
+  align-items: center; /* 垂直居中对齐元素 */
+  justify-content: center; /* 水平居中对齐元素 */
+  font-size: 35px;
+  color: #2c1c1c;
+  transition: all 0.4s;
+  
 }
 
 
 .sidebar-menu{
-    display: grid;
+  display: grid;
 }
 
 /*讓伸縮區裡面的按鈕的設定*/
 .sidebar-menu > button{
-    display: flex;
-    /* gap: 12px; */
-    align-items: stretch;
-    height: 100%;
-    border-left: 3px solid transparent;
-    border-radius: 50;
-    transition: all 0.4s;
+  display: flex;
+  /* gap: 12px; */
+  align-items: stretch;
+  height: 100%;
+  border-left: 3px solid transparent;
+  border-radius: 50;
+  transition: all 0.4s;
 }
 
 .sidebar-menu > .dicediv{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    gap:4px;
-    padding: auto;
-    transition: all 0.4s;
-    background-color: transparent;
-    padding: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  gap:4px;
+  padding: auto;
+  transition: all 0.4s;
+  
+  padding: 6px;
 }
 
 .sidebar-menu >.dicediv> button{
+align-items: center;
+/* background-color: #f6ee0c; */
+border: 0 solid #E2E8F0;
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+box-sizing: border-box;
+color: #1A202C;
+display: inline-flex;
+font-size: 30px;
+height: 56px;
+justify-content: center;
+overflow-wrap: break-word;
+padding: 16px;
+text-decoration: none;
+border-radius: 12px;
+cursor: pointer;
+user-select: none;
+-webkit-user-select: none;
+touch-action: manipulation;
+margin: 6px;
+opacity: 1;
+}
+
+.sidebar-menu >.dicediv> .colornumber{
   align-items: center;
   /* background-color: #f6ee0c; */
   border: 0 solid #E2E8F0;
@@ -95,7 +120,121 @@ body.open .sidebar{
   color: #1A202C;
   display: inline-flex;
   font-size: 30px;
-  height: 56px;
+  height: 30px;
+  width: 36px;
+  justify-content: center;
+  overflow-wrap: break-word;
+  padding: 6px;
+  text-decoration: none;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin: 0px;
+  opacity: 1;
+  background-color: rgba(246, 246, 246, 0.8);
+}
+
+.sidebar-menu > .dicediv > .yellow {
+  background-color: yellow;
+}
+
+.sidebar-menu >.dicediv> .red{
+  align-items: center;
+  background-color: red;
+}
+
+.sidebar-menu >.dicediv> .orange{
+  align-items: center;
+  background-color: orange;
+}
+.sidebar-menu >.dicediv> .blue{
+  align-items: center;
+  background-color: blue;
+}
+.sidebar-menu >.dicediv> .green{
+  align-items: center;
+  background-color: green;
+}
+.sidebar-menu >.dicediv> .dark{
+  align-items: center;
+  background-color: #091128;
+}
+.sidebar-menu >.dicediv> .enemy{
+  align-items: center;
+  background-color: gray;
+}
+
+.separator {
+  border-top: 1px solid #696868;
+  margin: 10px;
+}
+.enemylogo{
+  display: flex; /* 使用弹性盒子模型 */
+  align-items: center; /* 垂直居中对齐元素 */
+  justify-content: center; /* 水平居中对齐元素 */
+  font-size: 16px;
+}
+
+
+.box {
+  /* border: 1px solid #eee; */
+  margin-left: 80px;
+  margin-top: 6px;
+  height: 140px;
+  z-index: 10;
+}
+
+.titlebox {
+  display: flex;
+  overflow: hidden;
+  align-items: center; /* 垂直居中对齐元素 */
+}
+
+h2 {
+  display: flex;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  margin: 0.3em 0;
+  width: 80px;
+
+}
+p {
+  z-index: 10;
+  font-family:"Segoe UI",Arial,sans-serif;font-weight:400;margin:10px 0
+
+}
+.textbox {
+  display: flex;
+  overflow: hidden;
+  align-items: center; /* 垂直居中对齐元素 */
+  width: 260px;
+}
+
+.textbox> p {
+  display: flex;
+  
+  margin: 0.3em 0;
+  word-spacing: 3px;
+  font-weight: bold;
+  font-size: 18px;
+}
+canvas{
+z-index: -1000;
+}
+#rerolliing {
+  align-items: center;
+  position: absolute;
+  bottom: 2%;
+  right: 2%; 
+  border: 0 solid #E2E8F0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  color: #1A202C;
+  display: inline-flex;
+  font-size: 15px;
+  height: 40px;
+  width: 120px;
   justify-content: center;
   overflow-wrap: break-word;
   padding: 16px;
@@ -107,225 +246,88 @@ body.open .sidebar{
   touch-action: manipulation;
   margin: 6px;
   opacity: 1;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.sidebar-menu >.dicediv> .colornumber{
-    align-items: center;
-    /* background-color: #f6ee0c; */
-    border: 0 solid #E2E8F0;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    box-sizing: border-box;
-    color: #1A202C;
-    display: inline-flex;
-    font-size: 30px;
-    height: 30px;
-    width: 36px;
-    justify-content: center;
-    overflow-wrap: break-word;
-    padding: 6px;
-    text-decoration: none;
-    border-radius: 12px;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    margin: 0px;
-    opacity: 1;
-    background-color: rgba(246, 246, 246, 0.8);
-  }
-
-.sidebar-menu > .dicediv > .yellow {
-    background-color: yellow;
+#rerolliing.done{
+  align-items: center;
+  position: absolute;
+  bottom: 2%;
+  right: 2%; 
+  border: 0 solid #E2E8F0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  color: #cdd3e4;
+  background-color: #091128;
+  display: inline-flex;
+  font-size: 15px;
+  height: 40px;
+  width: 120px;
+  justify-content: center;
+  overflow-wrap: break-word;
+  padding: 16px;
+  text-decoration: none;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin: 6px;
+  opacity: 1;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.sidebar-menu >.dicediv> .red{
-    align-items: center;
-    background-color: red;
+#ignoring {
+  align-items: center;
+  position: absolute;
+  bottom: 2%;
+  left: 2%; 
+  border: 0 solid #E2E8F0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  color: #1A202C;
+  display: inline-flex;
+  font-size: 15px;
+  height: 40px;
+  width: 120px;
+  justify-content: center;
+  overflow-wrap: break-word;
+  padding: 16px;
+  text-decoration: none;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin: 6px;
+  opacity: 1;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.sidebar-menu >.dicediv> .orange{
-    align-items: center;
-    background-color: orange;
+#ignoring.done{
+  align-items: center;
+  position: absolute;
+  left: 2%;
+  bottom: 2%; 
+  border: 0 solid #E2E8F0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  color: #cdd3e4;
+  background-color: #091128;
+  display: inline-flex;
+  font-size: 15px;
+  height: 40px;
+  width: 120px;
+  justify-content: center;
+  overflow-wrap: break-word;
+  padding: 16px;
+  text-decoration: none;
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin: 6px;
+  opacity: 1;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
-.sidebar-menu >.dicediv> .blue{
-    align-items: center;
-    background-color: blue;
-}
-.sidebar-menu >.dicediv> .green{
-    align-items: center;
-    background-color: green;
-}
-.sidebar-menu >.dicediv> .dark{
-    align-items: center;
-    background-color: #091128;
-}
-.sidebar-menu >.dicediv> .enemy{
-    align-items: center;
-    background-color: gray;
-}
-
-.separator {
-    border-top: 1px solid #696868;
-    margin: 10px;
-  }
-.enemylogo{
-    display: flex; /* 使用弹性盒子模型 */
-    align-items: center; /* 垂直居中对齐元素 */
-    justify-content: center; /* 水平居中对齐元素 */
-    font-size: 16px;
-}
-
-
-.box {
-    /* border: 1px solid #eee; */
-    margin-left: 80px;
-    margin-top: 6px;
-    height: 140px;
-    z-index: 10;
-  }
-  
-  .titlebox {
-    display: flex;
-    overflow: hidden;
-    align-items: center; /* 垂直居中对齐元素 */
-  }
-  
- h2 {
-    display: flex;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    margin: 0.3em 0;
-    width: 80px;
-
-  }
-  p {
-    z-index: 10;
-    font-family:"Segoe UI",Arial,sans-serif;font-weight:400;margin:10px 0
-
-  }
-  .textbox {
-    display: flex;
-    overflow: hidden;
-    align-items: center; /* 垂直居中对齐元素 */
-    width: 260px;
-  }
-
- .textbox> p {
-    display: flex;
-    
-    margin: 0.3em 0;
-    word-spacing: 3px;
-    font-weight: bold;
-    font-size: 18px;
-  }
-canvas{
-  z-index: -1000;
-}
-  #rerolliing {
-    align-items: center;
-    position: absolute;
-    bottom: 2%;
-    right: 2%; 
-    border: 0 solid #E2E8F0;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    box-sizing: border-box;
-    color: #1A202C;
-    display: inline-flex;
-    font-size: 15px;
-    height: 40px;
-    width: 120px;
-    justify-content: center;
-    overflow-wrap: break-word;
-    padding: 16px;
-    text-decoration: none;
-    border-radius: 12px;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    margin: 6px;
-    opacity: 1;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  }
-
-  #rerolliing.done{
-    align-items: center;
-    position: absolute;
-    bottom: 2%;
-    right: 2%; 
-    border: 0 solid #E2E8F0;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    box-sizing: border-box;
-    color: #cdd3e4;
-    background-color: #091128;
-    display: inline-flex;
-    font-size: 15px;
-    height: 40px;
-    width: 120px;
-    justify-content: center;
-    overflow-wrap: break-word;
-    padding: 16px;
-    text-decoration: none;
-    border-radius: 12px;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    margin: 6px;
-    opacity: 1;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  }
-
-  #ignoring {
-    align-items: center;
-    position: absolute;
-    bottom: 2%;
-    left: 2%; 
-    border: 0 solid #E2E8F0;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    box-sizing: border-box;
-    color: #1A202C;
-    display: inline-flex;
-    font-size: 15px;
-    height: 40px;
-    width: 120px;
-    justify-content: center;
-    overflow-wrap: break-word;
-    padding: 16px;
-    text-decoration: none;
-    border-radius: 12px;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    margin: 6px;
-    opacity: 1;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  }
-
-  #ignoring.done{
-    align-items: center;
-    position: absolute;
-    left: 2%;
-    bottom: 2%; 
-    border: 0 solid #E2E8F0;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-    box-sizing: border-box;
-    color: #cdd3e4;
-    background-color: #091128;
-    display: inline-flex;
-    font-size: 15px;
-    height: 40px;
-    width: 120px;
-    justify-content: center;
-    overflow-wrap: break-word;
-    padding: 16px;
-    text-decoration: none;
-    border-radius: 12px;
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-    margin: 6px;
-    opacity: 1;
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  }
