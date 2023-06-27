@@ -24,24 +24,9 @@ body{
 body.open .sidebar{
     width: 200px;
     height: 100%;
+    background-color: transparent;
      opacity: 0.8;
 }
-
-/* button{
-    background: transparent;
-    border: 0;
-    padding: 0;
-    cursor: pointer;
-} */
-
-
-
-/* .sidebar-inner{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-} */
 
 .sidebar-header{
     display: flex;
@@ -91,9 +76,10 @@ body.open .sidebar{
 .sidebar-menu > .dicediv{
     display: flex;
     justify-content: center;
+    align-items: center;
     height: 100%;
     width: 100%;
-    gap:1rem;
+    gap:4px;
     padding: auto;
     transition: all 0.4s;
     background-color: transparent;
@@ -122,6 +108,31 @@ body.open .sidebar{
   margin: 6px;
   opacity: 1;
 }
+
+.sidebar-menu >.dicediv> .colornumber{
+    align-items: center;
+    /* background-color: #f6ee0c; */
+    border: 0 solid #E2E8F0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+    color: #1A202C;
+    display: inline-flex;
+    font-size: 30px;
+    height: 30px;
+    width: 36px;
+    justify-content: center;
+    overflow-wrap: break-word;
+    padding: 6px;
+    text-decoration: none;
+    border-radius: 12px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin: 0px;
+    opacity: 1;
+    background-color: rgba(246, 246, 246, 0.8);
+  }
 
 .sidebar-menu > .dicediv > .yellow {
     background-color: yellow;
@@ -184,6 +195,7 @@ body.open .sidebar{
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     margin: 0.3em 0;
     width: 80px;
+
   }
   p {
     z-index: 10;
@@ -204,12 +216,10 @@ body.open .sidebar{
     word-spacing: 3px;
     font-weight: bold;
     font-size: 18px;
-    
-    
   }
-  canvas{
-    z-index: -1000;
-  }
+canvas{
+  z-index: -1000;
+}
   #rerolliing {
     align-items: center;
     position: absolute;
@@ -319,35 +329,3 @@ body.open .sidebar{
     opacity: 1;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   }
-/* .sidebar-menu > button:hover{
-    border-left: 3px solid #f9f9f9;
-}
-
-.sidebar-menu > button.has-border{
-    padding-bottom: 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    margin-bottom: 1rem;
-}
-
-.sidebar-menu > button > i{
-    font-size: 25px;
-    color: #f9f9f9;
-    transition: all 0.4s;
-    
-} */
-
-/* .sidebar-menu > button:hover > i, .sidebar-menu > button:hover > span{
-    color: #bdbdbd;
-} */
-
-/* .sidebar-menu > button > span{
-    color: #f9f9f9;
-    opacity: 0;
-    transition: all 0.4s;
-} */
-
-/* body.open .sidebar-menu > button > span{
-    opacity: 1;
-    transition: all 0.4s;
-} */
-

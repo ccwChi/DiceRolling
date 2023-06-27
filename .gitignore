@@ -7,7 +7,7 @@ yarn-error.log*
 firebase-debug.log*
 firebase-debug.*.log*
 rawasset/
-
+vite-project/
 # Firebase cache
 .firebase/
 
