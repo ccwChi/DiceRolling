@@ -12,6 +12,7 @@
     "cannon-es": "^0.20.0",
     "firebase": "^9.23.0",
     "three": "^0.153.0"
+    "protobufjs": ">=7.2.4"
   },
   "devDependencies": {
     "css-loader": "^6.8.1",
